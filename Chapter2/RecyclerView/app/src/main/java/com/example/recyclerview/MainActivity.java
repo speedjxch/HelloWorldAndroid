@@ -19,6 +19,7 @@ import com.example.recyclerview.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import java.util.LinkedList;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private WordListAdapter mAdapter;
+    private SearchView sv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,21 @@ public class MainActivity extends AppCompatActivity {
         // Give the RecyclerView a default layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        sv= (SearchView) findViewById(R.id.search_bar);
+
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
 
         //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         //appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
@@ -63,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 int wordListSize = mWordList.size();
                 // Add a new word to the wordList.
                 mWordList.addLast("+ Word " + wordListSize);
+                mAdapter.add_mOriginWordList("+ Word " + wordListSize);
                 // Notify the adapter, that the data has changed.
                 mRecyclerView.getAdapter().notifyItemInserted(wordListSize);
                 // Scroll to the bottom.
