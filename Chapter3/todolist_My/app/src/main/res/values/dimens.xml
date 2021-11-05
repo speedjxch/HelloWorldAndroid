@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="textview_margin_to_checkbox">5dp</dimen>
+</resources>
